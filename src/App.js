@@ -11,7 +11,13 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // firebase imports
-import { doc, collection, addDoc, setDoc, getDocs } from "firebase/firestore";
+import {
+  doc,
+  collection,
+  addDoc,
+  setDoc,
+  onSnapshot,
+} from "firebase/firestore";
 import { db } from "./firebaseInit";
 
 const reducer = (state, action) => {
@@ -19,24 +25,24 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "GET_EXPENSES": {
       return {
-        expenses: payload.expenses
+        expenses: payload.expenses,
       };
     }
     case "ADD_EXPENSE": {
       return {
-        expenses: [payload.expense, ...state.expenses]
+        expenses: [payload.expense, ...state.expenses],
       };
     }
     case "REMOVE_EXPENSE": {
       return {
-        expenses: state.expenses.filter((expense) => expense.id !== payload.id)
+        expenses: state.expenses.filter((expense) => expense.id !== payload.id),
       };
     }
     case "UPDATE_EXPENSE": {
       const expensesDuplicate = state.expenses;
       expensesDuplicate[payload.expensePos] = payload.expense;
       return {
-        expenses: expensesDuplicate
+        expenses: expensesDuplicate,
       };
     }
     default:
@@ -49,14 +55,15 @@ function App() {
   const [expenseToUpdate, setExpenseToUpdate] = useState(null);
 
   const getData = async () => {
-    const snapshot = await getDocs(collection(db, "expenses"));
-    const expenses = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data()
-    }));
+    const unsub = onSnapshot(collection(db, "expenses"), (snapshot) => {
+      const expenses = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-    dispatch({ type: "GET_EXPENSES", payload: { expenses } });
-    toast.success("Expenses retrived successfully.");
+      dispatch({ type: "GET_EXPENSES", payload: { expenses } });
+      toast.success("Expenses retrived successfully.");
+    });
   };
 
   useEffect(() => {
@@ -66,11 +73,10 @@ function App() {
   const addExpense = async (expense) => {
     const expenseRef = collection(db, "expenses");
     const docRef = await addDoc(expenseRef, expense);
-
-    dispatch({
-      type: "ADD_EXPENSE",
-      payload: { expense: { id: docRef.id, ...expense } }
-    });
+    // dispatch({
+    //   type: "ADD_EXPENSE",
+    //   payload: { expense: { id: docRef.id, ...expense } },
+    // });
     toast.success("Expense added successfully.");
   };
 
