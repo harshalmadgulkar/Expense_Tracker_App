@@ -16,6 +16,8 @@ import {
   collection,
   addDoc,
   setDoc,
+  updateDoc,
+  deleteDoc,
   onSnapshot,
 } from "firebase/firestore";
 import { db } from "./firebaseInit";
@@ -54,6 +56,7 @@ function App() {
   const [state, dispatch] = useReducer(reducer, { expenses: [] });
   const [expenseToUpdate, setExpenseToUpdate] = useState(null);
 
+  // whenever db changes
   const getData = async () => {
     const unsub = onSnapshot(collection(db, "expenses"), (snapshot) => {
       const expenses = snapshot.docs.map((doc) => ({
@@ -62,12 +65,12 @@ function App() {
       }));
 
       dispatch({ type: "GET_EXPENSES", payload: { expenses } });
-      toast.success("Expenses retrived successfully.");
     });
   };
 
   useEffect(() => {
     getData();
+    toast.success("Expenses retrived successfully.");
   }, []);
 
   const addExpense = async (expense) => {
@@ -80,8 +83,10 @@ function App() {
     toast.success("Expense added successfully.");
   };
 
-  const deleteExpense = (id) => {
-    dispatch({ type: "REMOVE_EXPENSE", payload: { id } });
+  const deleteExpense = async (id) => {
+    // dispatch({ type: "REMOVE_EXPENSE", payload: { id } });
+    await deleteDoc(doc(db,"expenses",id));
+    toast.success("Expense deleted successfully.");
   };
 
   const resetExpenseToUpdate = () => {
@@ -100,9 +105,9 @@ function App() {
     }
 
     const expenseRef = doc(db, "expenses", expense.id);
-    await setDoc(expenseRef, expense);
+    await updateDoc(expenseRef, expense);
 
-    dispatch({ type: "UPDATE_EXPENSE", payload: { expensePos, expense } });
+    // dispatch({ type: "UPDATE_EXPENSE", payload: { expensePos, expense } });
     toast.success("Expense updated successfully.");
   };
 
