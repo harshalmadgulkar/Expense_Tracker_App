@@ -26,7 +26,8 @@ const ExpenseForm = ({
     if (!expenseToUpdate) {
       const expense = {
         text: expenseText,
-        amount: expenseAmount
+        amount: expenseAmount,
+        data: new Date(),
       };
       addExpense(expense);
       clearInput();

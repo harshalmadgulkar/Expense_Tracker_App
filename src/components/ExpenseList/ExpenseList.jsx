@@ -7,7 +7,6 @@ const ExpenseList = ({ expenses, deleteExpense, changeExpenseToUpdate }) => {
     <div className={styles.expenseListContainer}>
       <div className={styles.expenseListContainerHeading}>
         <h3>Transactions</h3>
-        <button>Download</button>
       </div>
       <ul className={styles.transactionList}>
         {expenses.map((expense, i) => {
