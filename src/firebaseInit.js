@@ -19,6 +19,6 @@ const db = getFirestore(app);
 export { db };
 
 // export Analytics
-// const analytics = getAnalytics();
-// export {analytics};
-// console.log(analytics, 'notification_received');
+const analytics = getAnalytics();
+export {analytics};
+console.log(analytics, 'notification_received');
