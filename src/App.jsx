@@ -21,6 +21,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { db } from "./firebaseInit";
+import { analytics } from "./firebaseInit";
 
 const reducer = (state, action) => {
   const { payload } = action;
@@ -85,7 +86,7 @@ function App() {
 
   const deleteExpense = async (id) => {
     // dispatch({ type: "REMOVE_EXPENSE", payload: { id } });
-    await deleteDoc(doc(db,"expenses",id));
+    await deleteDoc(doc(db, "expenses", id));
     toast.success("Expense deleted successfully.");
   };
 
@@ -111,8 +112,17 @@ function App() {
     toast.success("Expense updated successfully.");
   };
 
+  console.log(analytics);
+
   return (
     <>
+      <a
+        id="github-repo"
+        href="https://github.com/harshalmadgulkar/Expense_Tracker_App"
+        target="_blank"
+      >
+        GithHub Repo
+      </a>
       <ToastContainer />
       <h2 className="mainHeading">Expense Tracker</h2>
       <div className="App">

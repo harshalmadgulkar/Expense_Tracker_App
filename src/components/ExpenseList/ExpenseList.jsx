@@ -5,7 +5,10 @@ import Transaction from "../Transaction/Transaction";
 const ExpenseList = ({ expenses, deleteExpense, changeExpenseToUpdate }) => {
   return (
     <div className={styles.expenseListContainer}>
-      <h3>Transactions</h3>
+      <div className={styles.expenseListContainerHeading}>
+        <h3>Transactions</h3>
+        <button>Download</button>
+      </div>
       <ul className={styles.transactionList}>
         {expenses.map((expense, i) => {
           return (

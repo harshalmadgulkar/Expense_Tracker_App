@@ -3,10 +3,23 @@
   width: 100%;
 }
 
-.expenseListContainer h3 {
-  padding-bottom: 0.5rem;
+.expenseListContainerHeading{
   border-bottom: 2px solid #dedede;
   margin-bottom: 1rem;
+  display: inline-flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+.expenseListContainer button {
+  /* padding-bottom: 0.5rem; */
+  height: 100%;
+}
+
+.expenseListContainer h3 {
+  padding-bottom: 0.5rem;
 }
 
 .transactionList {
