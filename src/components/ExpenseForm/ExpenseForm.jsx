@@ -1,25 +1,31 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./ExpenseForm.module.css";
 
 const ExpenseForm = ({
   addExpense,
   expenseToUpdate,
   updateExpense,
-  resetExpenseToUpdate
+  resetExpenseToUpdate,
+  categories,
 }) => {
+  console.log(categories);
   const expenseTextInput = useRef();
   const expenseAmountInput = useRef();
+  const expenseCategorySelect = useRef();
 
   useEffect(() => {
     if (!expenseToUpdate) return;
     expenseTextInput.current.value = expenseToUpdate.text;
     expenseAmountInput.current.value = expenseToUpdate.amount;
+    // expenseCategorySelect.current.value = expenseToUpdate.amount;
   }, [expenseToUpdate]);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
     const expenseText = expenseTextInput.current.value;
     const expenseAmount = expenseAmountInput.current.value;
+    const expenseCategory = expenseCategorySelect.current.value;
+
     if (parseInt(expenseAmount) === 0) {
       return;
     }
@@ -27,6 +33,7 @@ const ExpenseForm = ({
       const expense = {
         text: expenseText,
         amount: expenseAmount,
+        category: expenseCategory,
         data: new Date(),
       };
       addExpense(expense);
@@ -37,7 +44,7 @@ const ExpenseForm = ({
     const expense = {
       text: expenseText,
       amount: expenseAmount,
-      id: expenseToUpdate.id
+      id: expenseToUpdate.id,
     };
 
     const result = updateExpense(expense);
@@ -49,6 +56,8 @@ const ExpenseForm = ({
   const clearInput = () => {
     expenseAmountInput.current.value = "";
     expenseTextInput.current.value = "";
+    expenseCategorySelect.current.value =
+      expenseCategorySelect.current.defaultValue;
   };
 
   return (
@@ -75,6 +84,22 @@ const ExpenseForm = ({
         ref={expenseAmountInput}
         required
       />
+      <select
+        className={styles.select}
+        defaultValue="Add Category Name"
+        ref={expenseCategorySelect}
+      >
+        <option value="Add Category Name" disabled>
+          Add Category Name
+        </option>
+        {categories.map((category, i) => {
+          return (
+            <option key={i} value={category.text}>
+              {category.text}
+            </option>
+          );
+        })}
+      </select>
       <button className={styles.submitBtn}>
         {expenseToUpdate ? "Edit " : "Add "} Transaction
       </button>

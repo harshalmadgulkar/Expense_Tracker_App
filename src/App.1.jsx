@@ -1,70 +1,21 @@
 import { useState, useReducer, useEffect } from "react";
-import "./App.css";
-
-// components imports
 import ExpenseForm from "./components/ExpenseForm/ExpenseForm";
 import ExpenseInfo from "./components/ExpenseInfo/ExpenseInfo";
 import ExpenseList from "./components/ExpenseList/ExpenseList";
 import CategoryForm from "./components/CategoryForm/CategoryForm";
-
-// react toasts
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-// firebase imports
 import {
   doc,
   collection,
   addDoc,
-  setDoc,
   updateDoc,
   deleteDoc,
   onSnapshot,
 } from "firebase/firestore";
 import { db } from "./firebaseInit";
-// import { analytics } from "./firebaseInit";
+import { reducer } from "./App";
 
-const reducer = (state, action) => {
-  const { payload } = action;
-  switch (action.type) {
-    case "GET_EXPENSES": {
-      return {
-        ...state,
-        expenses: payload.expenses,
-      };
-    }
-    case "GET_CATEGORIES": {
-      return {
-        ...state,
-        categories: payload.categories,
-      };
-    }
-    case "ADD_EXPENSE": {
-      return {
-        ...state,
-        expenses: [payload.expense, ...state.expenses],
-      };
-    }
-    case "REMOVE_EXPENSE": {
-      return {
-        ...state,
-        expenses: state.expenses.filter((expense) => expense.id !== payload.id),
-      };
-    }
-    case "UPDATE_EXPENSE": {
-      const expensesDuplicate = state.expenses;
-      expensesDuplicate[payload.expensePos] = payload.expense;
-      return {
-        ...state,
-        expenses: expensesDuplicate,
-      };
-    }
-    default:
-      return state;
-  }
-};
-
-function App() {
+export function App() {
   const [state, dispatch] = useReducer(reducer, {
     expenses: [],
     categories: [],
@@ -177,5 +128,3 @@ function App() {
     </>
   );
 }
-
-export default App;

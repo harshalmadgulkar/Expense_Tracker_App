@@ -10,7 +10,7 @@
   box-sizing: border-box;
 }
 
-#github-repo{
+#github-repo {
   color: #ff0000;
 }
 
@@ -32,6 +32,15 @@ h4 {
 }
 
 .expenseContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 3rem auto;
+  width: 350px;
+}
+
+.creatCategory {
   display: flex;
   flex-direction: column;
   align-items: center;
