@@ -1,7 +1,9 @@
+// import from firebase
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 
+// firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAuDBdmUoGZguzZHgHdBGILPV-LzxbiIYU",
   authDomain: "expense-tracker-67265.firebaseapp.com",
